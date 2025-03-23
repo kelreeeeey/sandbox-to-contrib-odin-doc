@@ -16,6 +16,7 @@ print_value_and_type :: proc(x:$T) where intrinsics.type_is_numeric(T) {
 
 ex_sqrt_floats :: proc() {
 
+    fmt.eprintln("\n================================================\n")
     fmt.eprintln("/*")
     fmt.eprintln(`Return square root of given input.
 
@@ -65,6 +66,141 @@ Output:`)
     print_value_and_type(sqrt_x_f64)
     print_value_and_type(sqrt_x_f64le)
     print_value_and_type(sqrt_x_f64be)
+
+    fmt.eprintln("*/")
+
+}
+
+ex_sin :: proc() {
+
+    fmt.eprintln("\n========== math.sin() ==================================\n")
+    fmt.eprintln("/*")
+    fmt.eprintln(`Return sine of given input in radian.
+
+**Only accept floats**
+
+math.sin assumes input in radians.
+    `)
+
+    fmt.eprintln(`Inputs:
+- x: input value of type floats in radians
+`)
+
+    fmt.eprintln(`Output:
+- x: ouput value that with same type of the input in radians
+`)
+
+    x90_f16    :f16   = 90.0
+    x30_f16    :f16   = 30.0
+
+    sin_x90_f16       := math.sin(f16(x90_f16))
+    sin_x90_f64_rad   := math.sin(math.to_radians(f64(x90_f16)))
+
+    sin_x2_f16       := math.sin(f16(x30_f16))
+    sin_x2_f64_rad   := math.sin(math.to_radians(f64(x30_f16)))
+
+    fmt.eprintln(`Example:
+        math.sin(f16(30.0))
+        math.sin(math.to_radians(f64(30.0)))
+        math.sin(f16(90.0))
+        math.sin(math.to_radians(f64(90.0)))
+        `)
+
+    fmt.eprintln(`Output:`)
+    print_value_and_type(sin_x2_f16)
+    print_value_and_type(sin_x2_f64_rad)
+    print_value_and_type(sin_x90_f16)
+    print_value_and_type(sin_x90_f64_rad)
+
+    fmt.eprintln("*/")
+
+}
+
+ex_cos :: proc() {
+
+    fmt.eprintln("\n========== math.cos() ==================================\n")
+    fmt.eprintln("/*")
+    fmt.eprintln(`Return cosine of given input in radian.
+
+**Only accept floats**
+
+math.cos assumes input in radians.
+    `)
+
+    fmt.eprintln(`Inputs:
+- x: input value of type floats in radians
+`)
+
+    fmt.eprintln(`Output:
+- x: ouput value that with same type of the input in radians
+`)
+
+    x60_f16    :f16   = 60.0
+    x30_f16    :f16   = 30.0
+
+    cos_x60_f16       := math.cos(f16(x60_f16))
+    cos_x60_f64_rad   := math.cos(math.to_radians(f64(x60_f16)))
+
+    cos_x2_f16       := math.cos(f16(x30_f16))
+    cos_x2_f64_rad   := math.cos(math.to_radians(f64(x30_f16)))
+
+    fmt.eprintln(`Example:
+        math.cos(f16(30.0))
+        math.cos(math.to_radians(f64(30.0)))
+        math.cos(f16(60.0))
+        math.cos(math.to_radians(f64(60.0)))
+        `)
+
+    fmt.eprintln(`Output:`)
+    print_value_and_type(cos_x2_f16)
+    print_value_and_type(cos_x2_f64_rad)
+    print_value_and_type(cos_x60_f16)
+    print_value_and_type(cos_x60_f64_rad)
+
+    fmt.eprintln("*/")
+
+}
+
+ex_tan :: proc() {
+
+    fmt.eprintln("\n========== math.tan() ==================================\n")
+    fmt.eprintln("/*")
+    fmt.eprintln(`Return tangent of given input in radian.
+
+**Only accept floats**
+
+math.tan assumes input in radians.
+    `)
+
+    fmt.eprintln(`Inputs:
+- x: input value of type floats in radians
+`)
+
+    fmt.eprintln(`Output:
+- x: ouput value that with same type of the input in radians
+`)
+
+    x60_f16    :f16   = 60.0
+    x30_f16    :f16   = 30.0
+
+    tan_x60_f16       := math.tan(f16(x60_f16))
+    tan_x60_f64_rad   := math.tan(math.to_radians(f64(x60_f16)))
+
+    tan_x2_f16       := math.tan(f16(x30_f16))
+    tan_x2_f64_rad   := math.tan(math.to_radians(f64(x30_f16)))
+
+    fmt.eprintln(`Example:
+        math.tan(f16(30.0))
+        math.tan(math.to_radians(f64(30.0)))
+        math.tan(f16(60.0))
+        math.tan(math.to_radians(f64(60.0)))
+        `)
+
+    fmt.eprintln(`Output:`)
+    print_value_and_type(tan_x2_f16)
+    print_value_and_type(tan_x2_f64_rad)
+    print_value_and_type(tan_x60_f16)
+    print_value_and_type(tan_x60_f64_rad)
 
     fmt.eprintln("*/")
 

@@ -8,3 +8,6 @@ developed in forked Odin-repo: [here](https://github.com/kelreeeeey/Odin)
 - `core:math`
     - `math.odin`
         - [DONE] `sqrt` procedure group 
+        - [DONE] `sin` procedure group 
+        - [DONE] `cos` procedure group 
+        - [DONE] `tan` procedure group 
