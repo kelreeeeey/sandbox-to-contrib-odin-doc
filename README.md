@@ -11,3 +11,5 @@ developed in forked Odin-repo: [here](https://github.com/kelreeeeey/Odin)
         - [DONE] `sin` procedure group 
         - [DONE] `cos` procedure group 
         - [DONE] `tan` procedure group 
+        - [DONE] `to_radians` procedure group 
+        - [DONE] `to_degrees` procedure group 

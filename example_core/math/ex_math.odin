@@ -205,3 +205,86 @@ math.tan assumes input in radians.
     fmt.eprintln("*/")
 
 }
+
+ex_to_radians :: proc() {
+
+    fmt.eprintln("\n========== math.to_radians() ==================================\n")
+    fmt.eprintln("/*")
+    fmt.println("Convert given input to radians.\n")
+    fmt.println("**Only accept floats**.\n")
+    fmt.println("Convertion is implemented by multipication of input and constant `math.RAD_PER_DEG`.\n")
+    fmt.printfln("`math.RAD_PER_DEG` = %v.\n", math.RAD_PER_DEG)
+
+    fmt.eprintln(`Inputs:
+- degrees: input value of type floats.
+`)
+
+    fmt.eprintln(`Output:
+- x: ouput value that with same type of the input in radians
+`)
+
+    //x60_f16    :f16   = 60.0
+    //x30_f16    :f16   = 30.0
+
+    x60_f16_rad   := math.to_radians(f16(60.0))
+    x60_f64_rad   := math.to_radians(f64(60.0))
+
+    x30_f16_rad   := math.to_radians(f16(30.0))
+    x30_f64_rad   := math.to_radians(f64(30.0))
+
+    fmt.eprintln(`Example:
+        math.to_radians(f16(30.0))
+        math.to_radians(f64(30.0))
+        math.to_radians(f16(60.0))
+        math.to_radians(f64(60.0))
+        `)
+
+    fmt.eprintln(`Output:`)
+    print_value_and_type(x30_f16_rad)
+    print_value_and_type(x30_f64_rad)
+    print_value_and_type(x60_f16_rad)
+    print_value_and_type(x60_f64_rad)
+
+    fmt.eprintln("*/")
+
+}
+
+ex_to_degrees :: proc() {
+
+    fmt.eprintln("\n========== math.to_degrees() ==================================\n")
+    fmt.eprintln("/*")
+    fmt.println("Convert given input to degrees.\n")
+    fmt.println("**Only accept floats**.\n")
+    fmt.println("Convertion is implemented by multipication of input and constant `math.DEG_PER_RAD`.\n")
+    fmt.printfln("`math.DEG_PER_RAD` = %v.\n", math.DEG_PER_RAD)
+
+    fmt.eprintln(`Inputs:
+- radians: input value of type floats.
+`)
+
+    fmt.eprintln(`Output:
+- x: ouput value that with same type of the input in degrees
+`)
+
+    x60_f16_rad   := math.to_degrees(f16(1.047197))
+    x60_f64_rad   := math.to_degrees(f64(1.047197))
+
+    x30_f16_rad   := math.to_degrees(f16(0.523598))
+    x30_f64_rad   := math.to_degrees(f64(0.523598))
+
+    fmt.eprintln(`Example:
+        math.to_degrees(f16(0.523598))
+        math.to_degrees(f64(0.523598))
+        math.to_degrees(f16(1.047197))
+        math.to_degrees(f64(1.047197))
+        `)
+
+    fmt.eprintln(`Output:`)
+    print_value_and_type(x30_f16_rad)
+    print_value_and_type(x30_f64_rad)
+    print_value_and_type(x60_f16_rad)
+    print_value_and_type(x60_f64_rad)
+
+    fmt.eprintln("*/")
+
+}
