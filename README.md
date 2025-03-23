@@ -5,4 +5,4 @@ dedicated repo to make example and test them as writing Odin documentations
 
 - `core:math`
     - `math.odin`
-        - [-] `sqrt` procedure group 
+        - [DONE] `sqrt` procedure group 
