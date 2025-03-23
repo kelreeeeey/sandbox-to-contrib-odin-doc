@@ -48,6 +48,7 @@ ex_sqrt_floats :: proc() {
 
     fmt.eprintln(`
 Output:`)
+    print_value_and_type(sqrt_x_float)
     print_value_and_type(sqrt_x_f16)
     print_value_and_type(sqrt_x_f16le)
     print_value_and_type(sqrt_x_f16be)
