@@ -17,11 +17,18 @@ print_value_and_type :: proc(x:$T) where intrinsics.type_is_numeric(T) {
 ex_sqrt_floats :: proc() {
 
     fmt.eprintln("/*")
-    fmt.eprintln(`Will return square root of given input.
+    fmt.eprintln(`Return square root of given input.
 
 **Only accept floats**
     `)
 
+    fmt.eprintln(`Inputs:
+- x: input value of type floats
+`)
+
+    fmt.eprintln(`Output:
+- x: ouput value that with same type of the input
+`)
     x_float :      = 4.0    ;    sqrt_x_float   := math.sqrt(x_float) // using default type of f16
     x_f16   :f16   = 30.90  ;    sqrt_x_f16     := math.sqrt(x_f16)
     x_f16le :f16le = 50.0   ;    sqrt_x_f16le   := math.sqrt(x_f16le)
