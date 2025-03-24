@@ -3,6 +3,8 @@ dedicated repo to make example and test them as writing Odin documentations
 
 developed in forked Odin-repo: [here](https://github.com/kelreeeeey/Odin)
 
+Current open-PR in Odin-master: [[doc-core:math] Documentation for core:math package. (partials) #4961](https://github.com/odin-lang/Odin/pull/4961)
+
 ## Current progress
 
 - `core:math`
