@@ -1,5 +1,6 @@
 package example_math
 
+import "base:intrinsics"
 import "core:math"
 import "core:fmt"
 
@@ -13,6 +14,32 @@ print_value_and_type :: proc(x:$T) where intrinsics.type_is_numeric(T) {
 }
 
 */
+
+helper :: proc(x: $T) where intrinsics.type_is_float(T) {
+        x_rad := math.to_radians(x)
+        fmt.printfln("// x: %v", x)
+        fmt.printfln("// x in radians: %v\n", x_rad)
+
+        {
+            fmt.printfln("// Without converting to radians\n")
+            cos_deg         := math.cos(x)
+            acos_deg_no_rad := math.acos(cos_deg)
+            x_back          := math.to_degrees(acos_deg_no_rad)
+            fmt.printfln("\tcos(x)=%v", cos_deg)
+            fmt.printfln("\tacos(cos_deg)=%v", acos_deg_no_rad)
+            fmt.printfln("\tmath.to_degrees(acos(cos_deg))=%v\n", x_back)
+        }
+
+        {
+            fmt.printfln("// Converting to radians\n")
+            cos_deg         := math.cos(x_rad)
+            acos_deg_no_rad := math.acos(cos_deg)
+            x_back          := math.to_degrees(acos_deg_no_rad)
+            fmt.printfln("\tcos(x_rad)=%v", cos_deg)
+            fmt.printfln("\tacos(cos_deg)=%v", acos_deg_no_rad)
+            fmt.printfln("\tmath.to_degrees(acos(cos_deg))=%v\n", x_back)
+        }
+    }
 
 ex_sqrt_floats :: proc() {
 
@@ -173,6 +200,117 @@ math.sin assumes input in radians.
 
 }
 
+ex_asin :: proc() {
+
+    fmt.eprintln("\n========== math.asin() ==================================\n")
+    fmt.eprintln("/*")
+    fmt.eprintln(`Return inverse of sine (arcsin) of given input.
+
+**Only accept floats**
+
+Relation with math.sin:
+
+    x = sin(y)
+    y = asin(x)
+
+    For real result, x should be in domain of [-1, 1],
+    resulting single value that lies in following range(s)
+
+        [  -π/2,   π/2] (in radians)
+        [-90°/2, 90°/2] (in degrees)
+
+Note:
+   Implementation of asin was developed at SunSoft, a Sun Microsystems, Inc. (1993).
+   For detail implementation, see source code, at asin_f64 procedure.
+    `)
+    fmt.eprintln("Beware of special cases i.e. `-0.0`, `+0.0`, `-Inf`, `+Inf`, and `Nan` (see examples).")
+    fmt.eprintln("")
+
+    fmt.eprintln(`Inputs:
+- x: input value of type floats in radians
+`)
+
+    fmt.eprintln(`Output:
+- x: ouput value that with same type of the input in radians
+`)
+
+    x30_f32:     f32 = 30.0;                     sin_x30_f32     := math.sin(x30_f32);     asin_x30_f32     := math.asin(sin_x30_f32)     // without converting to radians
+    x30_f32_rad: f32 = math.to_radians(x30_f32); sin_x30_f32_rad := math.sin(x30_f32_rad); asin_x30_f32_rad := math.asin(sin_x30_f32_rad) // convert to radians first
+
+    invers_asin_x30:       f32 = math.to_degrees(asin_x30_f32)
+    invers_asin_x30_rad:   f32 = math.to_degrees(asin_x30_f32_rad)
+
+    x60_f64le:     f64le = 60.0;                       sin_x60_f64le     := math.sin(x60_f64le);     asin_x60_f64le     := math.asin(sin_x60_f64le)     // without converting to radians
+    x60_f64le_rad: f64le = math.to_radians(x60_f64le); sin_x60_f64le_rad := math.sin(x60_f64le_rad); asin_x60_f64le_rad := math.asin(sin_x60_f64le_rad) // convert to radians first
+
+    invers_asin_x60:     f64le = math.to_degrees(asin_x60_f64le)
+    invers_asin_x60_rad: f64le = math.to_degrees(asin_x60_f64le_rad)
+
+    y_f64_pos_zero: f64 = +0.0;             asin_y_f64_pos_zero := math.asin(y_f64_pos_zero) // +0.0
+    y_f32_neg_zero: f32 = -0.0;             asin_y_f32_neg_zero := math.asin(y_f32_neg_zero) // -0.0
+    y_f16_pos_inf:  f16 = math.inf_f16(+1); asin_y_f16_pos_inf  := math.asin(y_f16_pos_inf)  // +Inf
+    y_f32_zero_inf: f32 = math.inf_f32(0);  asin_y_f32_zero_inf := math.asin(y_f32_zero_inf) // Inf
+    y_f64_neg_inf:  f64 = math.inf_f64(-1); asin_y_f64_neg_inf  := math.asin(y_f64_neg_inf)  // -Inf
+    y_f64be_nan:  f64be = math.nan_f64be(); asin_y_f64be_nan    := math.asin(y_f64be_nan)    // NaN
+    y_f16le_nan:  f16le = math.nan_f16le(); asin_y_f16le_nan    := math.asin(y_f16le_nan)    // NaN
+
+    fmt.eprintln(`Example:
+        x30_f32:     f32 = 30.0;                     sin_x30_f32     := math.sin(x30_f32);     asin_x30_f32     := math.asin(sin_x30_f32)     // without converting to radians
+        x30_f32_rad: f32 = math.to_radians(x30_f32); sin_x30_f32_rad := math.sin(x30_f32_rad); asin_x30_f32_rad := math.asin(sin_x30_f32_rad) // convert to radians first
+
+            // convert asin() back to degrees
+            invers_asin_x30:       f32 = math.to_degrees(asin_x30_f32)
+            invers_asin_x30_rad:   f32 = math.to_degrees(asin_x30_f32_rad)
+
+        x60_f64le:     f64le = 60.0;                       sin_x60_f64le     := math.sin(x60_f64le);     asin_x60_f64le     := math.asin(sin_x60_f64le)     // without converting to radians
+        x60_f64le_rad: f64le = math.to_radians(x60_f64le); sin_x60_f64le_rad := math.sin(x60_f64le_rad); asin_x60_f64le_rad := math.asin(sin_x60_f64le_rad) // convert to radians first
+
+            // convert asin() back to degrees
+            invers_asin_x60:     f64le = math.to_degrees(asin_x60_f64le)
+            invers_asin_x60_rad: f64le = math.to_degrees(asin_x60_f64le_rad)
+
+        // special cases. (see Float_Class and math.classify)
+        y_f64_pos_zero: f64 = +0.0;             asin_y_f64_pos_zero := math.asin(y_f64_pos_zero) // +0.0
+        y_f32_neg_zero: f32 = -0.0;             asin_y_f32_neg_zero := math.asin(y_f32_neg_zero) // -0.0
+        y_f16_pos_inf:  f16 = math.inf_f16(+1); asin_y_f16_pos_inf  := math.asin(y_f16_pos_inf)  // +Inf
+        y_f32_zero_inf: f32 = math.inf_f32(0);  asin_y_f32_zero_inf := math.asin(y_f32_zero_inf) // Inf
+        y_f64_neg_inf:  f64 = math.inf_f64(-1); asin_y_f64_neg_inf  := math.asin(y_f64_neg_inf)  // -Inf
+        y_f64be_nan:  f64be = math.nan_f64be(); asin_y_f64be_nan    := math.asin(y_f64be_nan)    // NaN
+        y_f16le_nan:  f16le = math.nan_f16le(); asin_y_f16le_nan    := math.asin(y_f16le_nan)    // NaN
+
+        `)
+
+    fmt.eprintln(`Output:`)
+    print_value_and_type(x30_f32, sin_x30_f32, asin_x30_f32)
+    print_value_and_type(x30_f32_rad, sin_x30_f32_rad, asin_x30_f32_rad)
+
+    fmt.println("")
+    fmt.println("\t\t// convert asin() back to degrees")
+    print_value_and_type_t(invers_asin_x30, tab=2)
+    print_value_and_type_t(invers_asin_x30_rad, tab=2)
+
+    fmt.println("")
+    print_value_and_type(x60_f64le, sin_x60_f64le, asin_x60_f64le)
+    print_value_and_type(x60_f64le_rad, sin_x60_f64le_rad, asin_x60_f64le_rad)
+
+    fmt.println("")
+    fmt.println("\t\t// convert asin() back to degrees")
+    print_value_and_type_t(invers_asin_x60, tab=2)
+    print_value_and_type_t(invers_asin_x60_rad, tab=2)
+
+    fmt.eprintln("\n\t// special cases, (see Float_Class and math.classfiy)")
+    print_value_and_type(asin_y_f64_pos_zero)
+    print_value_and_type(asin_y_f32_neg_zero)
+    print_value_and_type(asin_y_f16_pos_inf)
+    print_value_and_type(asin_y_f32_zero_inf)
+    print_value_and_type(asin_y_f64_neg_inf)
+    print_value_and_type(asin_y_f64be_nan)
+    print_value_and_type(asin_y_f16le_nan)
+
+    fmt.eprintln("*/")
+
+}
+
 ex_cos :: proc() {
 
     fmt.eprintln("\n========== math.cos() ==================================\n")
@@ -246,6 +384,117 @@ math.cos assumes input in radians.
 
 }
 
+ex_acos :: proc() {
+
+    fmt.eprintln("\n========== math.acos() ==================================\n")
+    fmt.eprintln("/*")
+    fmt.eprintln(`Return inverse of cosine (arccos) of given input.
+
+**Only accept floats**
+
+Relation with math.cos:
+
+    x = cos(y)
+    y = acos(x)
+
+    For real result, x should be in domain of [-1, 1],
+    resulting single value that lies in following range(s)
+
+        [ 0,   π] (in radians)
+        [ 0, 180] (in degrees)
+
+Note:
+   Implementation of asin was developed at SunSoft, a Sun Microsystems, Inc. (1993).
+   For detail implementation, see source code, at acos_f64 procedure.
+    `)
+    fmt.eprintln("Beware of special cases i.e. `-0.0`, `+0.0`, `-Inf`, `+Inf`, and `Nan` (see examples).")
+    fmt.eprintln("")
+
+    fmt.eprintln(`Inputs:
+- x: input value of type floats in radians
+`)
+
+    fmt.eprintln(`Output:
+- x: ouput value that with same type of the input in radians
+`)
+
+    x30_f32:     f32 = 30.0;                     cos_x30_f32     := math.cos(x30_f32);     acos_x30_f32     := math.acos(cos_x30_f32)     // without converting to radians
+    x30_f32_rad: f32 = math.to_radians(x30_f32); cos_x30_f32_rad := math.cos(x30_f32_rad); acos_x30_f32_rad := math.acos(cos_x30_f32_rad) // convert to radians first
+
+    invers_acos_x30:       f32 = math.to_degrees(acos_x30_f32)
+    invers_acos_x30_rad:   f32 = math.to_degrees(acos_x30_f32_rad)
+
+    x60_f64le:     f64le = 60.0;                       cos_x60_f64le     := math.cos(x60_f64le);     acos_x60_f64le     := math.acos(cos_x60_f64le)     // without converting to radians
+    x60_f64le_rad: f64le = math.to_radians(x60_f64le); cos_x60_f64le_rad := math.cos(x60_f64le_rad); acos_x60_f64le_rad := math.acos(cos_x60_f64le_rad) // convert to radians first
+
+    invers_acos_x60:     f64le = math.to_degrees(acos_x60_f64le)
+    invers_acos_x60_rad: f64le = math.to_degrees(acos_x60_f64le_rad)
+
+    y_f64_pos_zero: f64 = +0.0;             acos_y_f64_pos_zero := math.acos(y_f64_pos_zero) // +0.0
+    y_f32_neg_zero: f32 = -0.0;             acos_y_f32_neg_zero := math.acos(y_f32_neg_zero) // -0.0
+    y_f16_pos_inf:  f16 = math.inf_f16(+1); acos_y_f16_pos_inf  := math.acos(y_f16_pos_inf)  // +Inf
+    y_f32_zero_inf: f32 = math.inf_f32(0);  acos_y_f32_zero_inf := math.acos(y_f32_zero_inf) // Inf
+    y_f64_neg_inf:  f64 = math.inf_f64(-1); acos_y_f64_neg_inf  := math.acos(y_f64_neg_inf)  // -Inf
+    y_f64be_nan:  f64be = math.nan_f64be(); acos_y_f64be_nan    := math.acos(y_f64be_nan)    // NaN
+    y_f16le_nan:  f16le = math.nan_f16le(); acos_y_f16le_nan    := math.acos(y_f16le_nan)    // NaN
+
+    fmt.eprintln(`Example:
+        x30_f32:     f32 = 30.0;                     cos_x30_f32     := math.cos(x30_f32);     acos_x30_f32     := math.acos(cos_x30_f32)     // without converting to radians
+        x30_f32_rad: f32 = math.to_radians(x30_f32); cos_x30_f32_rad := math.cos(x30_f32_rad); acos_x30_f32_rad := math.acos(cos_x30_f32_rad) // convert to radians first
+
+            // convert acos() back to degrees
+            invers_acos_x30:       f32 = math.to_degrees(acos_x30_f32)
+            invers_acos_x30_rad:   f32 = math.to_degrees(acos_x30_f32_rad)
+
+        x60_f64le:     f64le = 60.0;                       cos_x60_f64le     := math.cos(x60_f64le);     acos_x60_f64le     := math.acos(cos_x60_f64le)     // without converting to radians
+        x60_f64le_rad: f64le = math.to_radians(x60_f64le); cos_x60_f64le_rad := math.cos(x60_f64le_rad); acos_x60_f64le_rad := math.acos(cos_x60_f64le_rad) // convert to radians first
+
+            // convert acos() back to degrees
+            invers_acos_x60:     f64le = math.to_degrees(acos_x60_f64le)
+            invers_acos_x60_rad: f64le = math.to_degrees(acos_x60_f64le_rad)
+
+        // special cases. (see Float_Class and math.classify)
+        y_f64_pos_zero: f64 = +0.0;             acos_y_f64_pos_zero := math.acos(y_f64_pos_zero) // +0.0
+        y_f32_neg_zero: f32 = -0.0;             acos_y_f32_neg_zero := math.acos(y_f32_neg_zero) // -0.0
+        y_f16_pos_inf:  f16 = math.inf_f16(+1); acos_y_f16_pos_inf  := math.acos(y_f16_pos_inf)  // +Inf
+        y_f32_zero_inf: f32 = math.inf_f32(0);  acos_y_f32_zero_inf := math.acos(y_f32_zero_inf) // Inf
+        y_f64_neg_inf:  f64 = math.inf_f64(-1); acos_y_f64_neg_inf  := math.acos(y_f64_neg_inf)  // -Inf
+        y_f64be_nan:  f64be = math.nan_f64be(); acos_y_f64be_nan    := math.acos(y_f64be_nan)    // NaN
+        y_f16le_nan:  f16le = math.nan_f16le(); acos_y_f16le_nan    := math.acos(y_f16le_nan)    // NaN
+
+        `)
+
+    fmt.eprintln(`Output:`)
+    print_value_and_type(x30_f32, cos_x30_f32, acos_x30_f32)
+    print_value_and_type(x30_f32_rad, cos_x30_f32_rad, acos_x30_f32_rad)
+
+    fmt.println("")
+    fmt.println("\t\t// convert acos() back to degrees")
+    print_value_and_type_t(invers_acos_x30, tab=2)
+    print_value_and_type_t(invers_acos_x30_rad, tab=2)
+
+    fmt.println("")
+    print_value_and_type(x60_f64le, cos_x60_f64le, acos_x60_f64le)
+    print_value_and_type(x60_f64le_rad, cos_x60_f64le_rad, acos_x60_f64le_rad)
+
+    fmt.println("")
+    fmt.println("\t\t// convert acos() back to degrees")
+    print_value_and_type_t(invers_acos_x60, tab=2)
+    print_value_and_type_t(invers_acos_x60_rad, tab=2)
+
+    fmt.eprintln("\n\t// special cases, (see Float_Class and math.classfiy)")
+    print_value_and_type(acos_y_f64_pos_zero)
+    print_value_and_type(acos_y_f32_neg_zero)
+    print_value_and_type(acos_y_f16_pos_inf)
+    print_value_and_type(acos_y_f32_zero_inf)
+    print_value_and_type(acos_y_f64_neg_inf)
+    print_value_and_type(acos_y_f64be_nan)
+    print_value_and_type(acos_y_f16le_nan)
+
+    fmt.eprintln("*/")
+
+}
+
 ex_tan :: proc() {
 
     fmt.eprintln("\n========== math.tan() ==================================\n")
@@ -314,6 +563,125 @@ math.tan assumes input in radians.
     print_value_and_type(tan_y_f64_neg_inf)
     print_value_and_type(tan_y_f64be_nan)
     print_value_and_type(tan_y_f16le_nan)
+
+    fmt.eprintln("*/")
+
+}
+
+ex_atan :: proc() {
+
+    fmt.eprintln("\n========== math.atan() ==================================\n")
+    fmt.eprintln("/*")
+    fmt.eprintln(`Return inverse of tangent (arctan) of given input.
+
+**Only accept floats**
+
+Relation with math.tan:
+
+    x = tan(y)
+    y = atan(x)
+
+    For real result, x could be any real numbers,
+    resulting single value that lies in following range(s)
+
+        [-π/2, π/2] (in radians)
+        [ -90,  90] (in degrees)
+
+Note:
+    Implementation of math.atan using math.atan2(y,x) where y is the input value,
+    and x is set to 1. See math.atan2 for detail.
+    `)
+    fmt.eprintln("Beware of special cases i.e. `-0.0`, `+0.0`, `-Inf`, `+Inf`, and `Nan` (see examples).")
+    fmt.eprintln("For special cases related to math.atan2(x, 1)")
+    fmt.eprintln(`
+    atan2(  0, 1) = 0
+    atan2( -0, 1) = - 0
+    atan2(  ∞, 1) = π/2
+    atan2( +∞, 1) = + π/2
+    atan2( -∞, 1) = - π/2
+    atan2(NaN, 1) = NaN
+    `)
+
+    fmt.eprintln(`Inputs:
+- x: input value of type floats in radians
+`)
+
+    fmt.eprintln(`Output:
+- x: ouput value that with same type of the input in radians
+`)
+
+    x30_f32:     f32 = 30.0;                     tan_x30_f32     := math.tan(x30_f32);     atan_x30_f32     := math.atan(tan_x30_f32)     // without converting to radians
+    x30_f32_rad: f32 = math.to_radians(x30_f32); tan_x30_f32_rad := math.tan(x30_f32_rad); atan_x30_f32_rad := math.atan(tan_x30_f32_rad) // convert to radians first
+
+    invers_atan_x30:       f32 = math.to_degrees(atan_x30_f32)
+    invers_atan_x30_rad:   f32 = math.to_degrees(atan_x30_f32_rad)
+
+    x60_f64le:     f64le = 60.0;                       tan_x60_f64le     := math.tan(x60_f64le);     atan_x60_f64le     := math.atan(tan_x60_f64le)     // without converting to radians
+    x60_f64le_rad: f64le = math.to_radians(x60_f64le); tan_x60_f64le_rad := math.tan(x60_f64le_rad); atan_x60_f64le_rad := math.atan(tan_x60_f64le_rad) // convert to radians first
+
+    invers_atan_x60:     f64le = math.to_degrees(atan_x60_f64le)
+    invers_atan_x60_rad: f64le = math.to_degrees(atan_x60_f64le_rad)
+
+    y_f64_pos_zero: f64 = +0.0;             atan_y_f64_pos_zero := math.atan(y_f64_pos_zero) // +0.0
+    y_f32_neg_zero: f32 = -0.0;             atan_y_f32_neg_zero := math.atan(y_f32_neg_zero) // -0.0
+    y_f16_pos_inf:  f16 = math.inf_f16(+1); atan_y_f16_pos_inf  := math.atan(y_f16_pos_inf)  // +Inf
+    y_f32_zero_inf: f32 = math.inf_f32(0);  atan_y_f32_zero_inf := math.atan(y_f32_zero_inf) // Inf
+    y_f64_neg_inf:  f64 = math.inf_f64(-1); atan_y_f64_neg_inf  := math.atan(y_f64_neg_inf)  // -Inf
+    y_f64be_nan:  f64be = math.nan_f64be(); atan_y_f64be_nan    := math.atan(y_f64be_nan)    // NaN
+    y_f16le_nan:  f16le = math.nan_f16le(); atan_y_f16le_nan    := math.atan(y_f16le_nan)    // NaN
+
+    fmt.eprintln(`Example:
+        x30_f32:     f32 = 30.0;                     tan_x30_f32     := math.tan(x30_f32);     atan_x30_f32     := math.atan(tan_x30_f32)     // without converting to radians
+        x30_f32_rad: f32 = math.to_radians(x30_f32); tan_x30_f32_rad := math.tan(x30_f32_rad); atan_x30_f32_rad := math.atan(tan_x30_f32_rad) // convert to radians first
+
+            // convert atan() back to degrees
+            invers_atan_x30:       f32 = math.to_degrees(atan_x30_f32)
+            invers_atan_x30_rad:   f32 = math.to_degrees(atan_x30_f32_rad)
+
+        x60_f64le:     f64le = 60.0;                       tan_x60_f64le     := math.tan(x60_f64le);     atan_x60_f64le     := math.atan(tan_x60_f64le)     // without converting to radians
+        x60_f64le_rad: f64le = math.to_radians(x60_f64le); tan_x60_f64le_rad := math.tan(x60_f64le_rad); atan_x60_f64le_rad := math.atan(tan_x60_f64le_rad) // convert to radians first
+
+            // convert atan() back to degrees
+            invers_atan_x60:     f64le = math.to_degrees(atan_x60_f64le)
+            invers_atan_x60_rad: f64le = math.to_degrees(atan_x60_f64le_rad)
+
+        // special cases. (see Float_Class and math.classify)
+        y_f64_pos_zero: f64 = +0.0;             atan_y_f64_pos_zero := math.atan(y_f64_pos_zero) // +0.0
+        y_f32_neg_zero: f32 = -0.0;             atan_y_f32_neg_zero := math.atan(y_f32_neg_zero) // -0.0
+        y_f16_pos_inf:  f16 = math.inf_f16(+1); atan_y_f16_pos_inf  := math.atan(y_f16_pos_inf)  // +Inf
+        y_f32_zero_inf: f32 = math.inf_f32(0);  atan_y_f32_zero_inf := math.atan(y_f32_zero_inf) // Inf
+        y_f64_neg_inf:  f64 = math.inf_f64(-1); atan_y_f64_neg_inf  := math.atan(y_f64_neg_inf)  // -Inf
+        y_f64be_nan:  f64be = math.nan_f64be(); atan_y_f64be_nan    := math.atan(y_f64be_nan)    // NaN
+        y_f16le_nan:  f16le = math.nan_f16le(); atan_y_f16le_nan    := math.atan(y_f16le_nan)    // NaN
+
+        `)
+
+    fmt.eprintln(`Output:`)
+    print_value_and_type(x30_f32, tan_x30_f32, atan_x30_f32)
+    print_value_and_type(x30_f32_rad, tan_x30_f32_rad, atan_x30_f32_rad)
+
+    fmt.println("")
+    fmt.println("\t\t// convert atan() back to degrees")
+    print_value_and_type_t(invers_atan_x30, tab=2)
+    print_value_and_type_t(invers_atan_x30_rad, tab=2)
+
+    fmt.println("")
+    print_value_and_type(x60_f64le, tan_x60_f64le, atan_x60_f64le)
+    print_value_and_type(x60_f64le_rad, tan_x60_f64le_rad, atan_x60_f64le_rad)
+
+    fmt.println("")
+    fmt.println("\t\t// convert atan() back to degrees")
+    print_value_and_type_t(invers_atan_x60, tab=2)
+    print_value_and_type_t(invers_atan_x60_rad, tab=2)
+
+    fmt.eprintln("\n\t// special cases, (see Float_Class and math.classfiy)")
+    print_value_and_type(atan_y_f64_pos_zero)
+    print_value_and_type(atan_y_f32_neg_zero)
+    print_value_and_type(atan_y_f16_pos_inf)
+    print_value_and_type(atan_y_f32_zero_inf)
+    print_value_and_type(atan_y_f64_neg_inf)
+    print_value_and_type(atan_y_f64be_nan)
+    print_value_and_type(atan_y_f16le_nan)
 
     fmt.eprintln("*/")
 
