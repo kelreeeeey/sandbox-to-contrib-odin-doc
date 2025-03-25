@@ -17,3 +17,6 @@ Current open-PR in Odin-master: [[doc-core:math] Documentation for core:math pac
         - [DONE] `to_degrees` procedure group
         - [DONE] `DEG_PER_RAD` constant
         - [DONE] `RAD_PER_DEG` constant
+        - [DONE] `asin` procedure group
+        - [DONE] `acos` procedure group
+        - [DONE] `atan` procedure group
